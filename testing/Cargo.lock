@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flock"
+name = "flack-test"
 version = "0.1.0"
 dependencies = [
  "flack",

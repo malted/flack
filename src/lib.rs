@@ -73,8 +73,6 @@ pub fn unlock_file(file: &File) -> Result<()> {
 mod tests {
     use super::*;
 
-	static TESTING_FLOCK_PATH: &str = "testing/flock";
-
 	#[test]
 	fn lock_unlock() {
 		let lockfile_name = "lock_unlock.test.lock";
@@ -91,25 +89,25 @@ mod tests {
 
 		std::process::Command::new("cargo")
 			.arg("build")
-			.current_dir(TESTING_FLOCK_PATH)
+			.current_dir("testing")
 			.stdout(std::process::Stdio::null())
 			.spawn()
-			.expect("failed to spawn cargo to build flock")
+			.expect("failed to spawn cargo to build test binary")
 			.wait()
-			.expect("failed to wait for flock to build");
+			.expect("failed to wait for the test binary to build");
 
-		let mut child = std::process::Command::new(TESTING_FLOCK_PATH.to_owned() + "/target/debug/flock")
+		let mut child = std::process::Command::new("testing/target/debug/flack-test")
 			.arg("lock")
 			.arg(&lockfile_name)
 			.spawn()
-			.expect("failed to spawn flock");
+			.expect("failed to spawn the test binary");
 
 		std::thread::sleep(std::time::Duration::from_millis(100));
 		
 		assert!(lock_file(&file).is_err());
 
-		child.kill().expect("failed to kill flock");
-		std::fs::remove_dir_all(TESTING_FLOCK_PATH.to_owned() + "/target").unwrap();
+		child.kill().expect("failed to kill test binary");
+		std::fs::remove_dir_all("testing/target").unwrap();
 		std::fs::remove_file(lockfile_name).unwrap();
 	}
 }
