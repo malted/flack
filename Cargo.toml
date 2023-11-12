@@ -1,0 +1,11 @@
+[package]
+name = "flack"
+description = "Tiny file locking utilities"
+version = "0.1.0"
+edition = "2021"
+authors = ["malted"]
+license = "MIT"
+documentation = "https://docs.rs/flack"
+
+[target."cfg(windows)".dependencies]
+winapi = { version = "0.3.9", features = ["fileapi"] }
